@@ -1,0 +1,33 @@
+package be.ephec.padel.controller;
+
+import be.ephec.padel.model.Match;
+import be.ephec.padel.service.MatchService;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/matchs")
+
+public class MatchController
+{
+    private final MatchService matchService;
+
+    public MatchController (MatchService matchService)
+    {
+        this.matchService = matchService;
+    }
+
+    // GET /api/matches -> liste de tous les matches
+    @GetMapping
+    public List<Match> getTousLesMatchs()
+    {
+        return matchService.getTousLesMatchs();
+    }
+
+    // POST /api/matches -> creer un nouveau match
+    @PostMapping
+    public Match creerMatch(@RequestBody Match match)
+    {
+        return matchService.creerMatch(match);
+    }
+}
