@@ -30,4 +30,10 @@ public class MatchController
     {
         return matchService.creerMatch(match);
     }
+
+    // GET /api/matchs/{id}/places-restantes
+    @GetMapping("/{id}/places-restantes")
+    public int getPlacesRestantes(@PathVariable Long id) {
+        return matchService.getPlacesRestantes(id);
+    }
 }
