@@ -39,4 +39,9 @@ public class MatchService
         long joueursInscrits = participationRepository.countByMatchId(matchId);
         return 4 - (int) joueursInscrits;
     }
+    // REGLE METIER : le match est-il complet (4 joueurs) ?
+    public boolean estComplet(Long matchId) {
+        long joueursInscrits = participationRepository.countByMatchId(matchId);
+        return joueursInscrits == 4;
+    }
 }

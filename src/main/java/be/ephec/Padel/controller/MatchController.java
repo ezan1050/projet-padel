@@ -36,4 +36,9 @@ public class MatchController
     public int getPlacesRestantes(@PathVariable Long id) {
         return matchService.getPlacesRestantes(id);
     }
+    // GET /api/matchs/{id}/complet
+    @GetMapping("/{id}/complet")
+    public boolean estComplet(@PathVariable Long id) {
+        return matchService.estComplet(id);
+    }
 }
