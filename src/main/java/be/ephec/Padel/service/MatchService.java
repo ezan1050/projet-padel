@@ -44,4 +44,10 @@ public class MatchService
         long joueursInscrits = participationRepository.countByMatchId(matchId);
         return joueursInscrits == 4;
     }
+
+    public double getPrixParJoueur(Long matchId)
+    {
+        Match match = matchRepository.findById(matchId).orElseThrow(() -> new IllegalArgumentException("Match non trouvé"));
+        return match.getPrix() / 4.0;
+    }
 }

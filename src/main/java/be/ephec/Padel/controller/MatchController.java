@@ -41,4 +41,11 @@ public class MatchController
     public boolean estComplet(@PathVariable Long id) {
         return matchService.estComplet(id);
     }
+
+    // GET /api/matchs/{id}/prix-par-joueur
+    @GetMapping("/{id}/prix-par-joueur")
+    public double getPrixParJoueur(@PathVariable Long id)
+    {
+        return matchService.getPrixParJoueur(id);
+    }
 }
