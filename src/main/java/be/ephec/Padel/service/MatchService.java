@@ -1,6 +1,7 @@
 package be.ephec.padel.service;
 
 import be.ephec.padel.model.Match;
+import be.ephec.padel.model.StatutPaiement;
 import be.ephec.padel.repository.MatchRepository;
 import be.ephec.padel.repository.ParticipationRepository;
 import org.springframework.stereotype.Service;
@@ -49,5 +50,11 @@ public class MatchService
     {
         Match match = matchRepository.findById(matchId).orElseThrow(() -> new IllegalArgumentException("Match non trouvé"));
         return match.getPrix() / 4.0;
+    }
+
+    public boolean tousOntPaye(Long matchId)
+    {
+        long nonPayes = participationRepository.countByMatchIdAndStatutPaiement(matchId,StatutPaiement.EN_ATTENTE);
+        return nonPayes == 0;
     }
 }

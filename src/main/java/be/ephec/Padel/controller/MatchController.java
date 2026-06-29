@@ -48,4 +48,10 @@ public class MatchController
     {
         return matchService.getPrixParJoueur(id);
     }
+
+    // GET /api/matchs/{id}/tous-payes
+    @GetMapping("/{id}/tous-payes")
+    public boolean tousOntPaye(@PathVariable Long id) {
+        return matchService.tousOntPaye(id);
+    }
 }
