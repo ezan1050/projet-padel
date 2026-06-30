@@ -58,6 +58,8 @@ public class DataSeeder implements CommandLineRunner {
         marie.setPrenom("Marie");
         marie.setEmail("marie@example.com");
         marie.setType(TypeMembre.GLOBAL);
+        marie.setMotDePasse("marie123");
+        marie.setRole(Role.ADMIN_GLOBAL);
         membreRepository.save(marie);
 
         Membre luc = new Membre();
@@ -67,6 +69,8 @@ public class DataSeeder implements CommandLineRunner {
         luc.setEmail("luc@example.com");
         luc.setType(TypeMembre.SITE);
         luc.setSite(site);
+        luc.setMotDePasse("luc123");
+        luc.setRole(Role.USER);
         membreRepository.save(luc);
 
         Match match = new Match();

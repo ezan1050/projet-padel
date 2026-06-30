@@ -32,9 +32,13 @@ public class Membre
     private String prenom;
     private String email;
     private LocalDate dateFinPenalite;
+    private String motDePasse;
 
     @Enumerated(EnumType.STRING)
     private TypeMembre type;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @ManyToOne
     private Site site;
@@ -67,4 +71,12 @@ public class Membre
 
     public LocalDate getDateFinPenalite(){return dateFinPenalite;}
     public void setDateFinPenalite(LocalDate dateFinPenalite){this.dateFinPenalite = dateFinPenalite;}
+
+    public String getMotDePasse() { return motDePasse; }
+    public void setMotDePasse(String motDePasse) { this.motDePasse = motDePasse; }
+
+    public Role getRole() { return role; }
+    public void setRole(Role role) { this.role = role; }
+
+
 }
