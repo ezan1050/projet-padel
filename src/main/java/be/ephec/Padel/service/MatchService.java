@@ -57,4 +57,6 @@ public class MatchService
         long nonPayes = participationRepository.countByMatchIdAndStatutPaiement(matchId,StatutPaiement.EN_ATTENTE);
         return nonPayes == 0;
     }
+
+   
 }

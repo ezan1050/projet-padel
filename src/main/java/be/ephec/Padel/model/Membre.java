@@ -1,6 +1,7 @@
 package be.ephec.padel.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 
 
 /**
@@ -30,6 +31,7 @@ public class Membre
     private String nom;
     private String prenom;
     private String email;
+    private LocalDate dateFinPenalite;
 
     @Enumerated(EnumType.STRING)
     private TypeMembre type;
@@ -62,4 +64,7 @@ public class Membre
 
     public Site getSite() {return site;}
     public void setSite(Site site) {this.site = site;}
+
+    public LocalDate getDateFinPenalite(){return dateFinPenalite;}
+    public void setDateFinPenalite(LocalDate dateFinPenalite){this.dateFinPenalite = dateFinPenalite;}
 }

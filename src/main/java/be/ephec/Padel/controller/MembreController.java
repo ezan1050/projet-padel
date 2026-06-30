@@ -29,4 +29,16 @@ public class MembreController
     {
         return membreService.creerMembre(membre);
     }
+
+    // POST /api/membres/{id}/penalite -> applique une penalite d'une semaine
+    @PostMapping("/{id}/penalite")
+    public Membre appliquerPenalite(@PathVariable Long id) {
+        return membreService.appliquerPenalite(id);
+    }
+
+    // GET /api/membres/{id}/penalise -> le membre est-il penalise ?
+    @GetMapping("/{id}/penalise")
+    public boolean estPenalise(@PathVariable Long id) {
+        return membreService.estPenalise(id);
+    }
 }
