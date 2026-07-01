@@ -4,6 +4,7 @@ import be.ephec.padel.model.*;
 import be.ephec.padel.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -16,17 +17,21 @@ public class DataSeeder implements CommandLineRunner {
     private final MembreRepository membreRepository;
     private final MatchRepository matchRepository;
     private final ParticipationRepository participationRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public DataSeeder(SiteRepository siteRepository,
                       TerrainRepository terrainRepository,
                       MembreRepository membreRepository,
                       MatchRepository matchRepository,
-                      ParticipationRepository participationRepository) {
+                      ParticipationRepository participationRepository,
+                      PasswordEncoder passwordEncoder) 
+    {
         this.siteRepository = siteRepository;
         this.terrainRepository = terrainRepository;
         this.membreRepository = membreRepository;
         this.matchRepository = matchRepository;
         this.participationRepository = participationRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -58,7 +63,7 @@ public class DataSeeder implements CommandLineRunner {
         marie.setPrenom("Marie");
         marie.setEmail("marie@example.com");
         marie.setType(TypeMembre.GLOBAL);
-        marie.setMotDePasse("marie123");
+        marie.setMotDePasse(passwordEncoder.encode("marie123"));
         marie.setRole(Role.ADMIN_GLOBAL);
         membreRepository.save(marie);
 
@@ -69,7 +74,7 @@ public class DataSeeder implements CommandLineRunner {
         luc.setEmail("luc@example.com");
         luc.setType(TypeMembre.SITE);
         luc.setSite(site);
-        luc.setMotDePasse("luc123");
+        luc.setMotDePasse(passwordEncoder.encode("luc123"));
         luc.setRole(Role.USER);
         membreRepository.save(luc);
 

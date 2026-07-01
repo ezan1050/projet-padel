@@ -5,6 +5,7 @@ import be.ephec.padel.repository.MembreRepository;
 import be.ephec.padel.security.JwtService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Map;
 import java.util.Optional;
@@ -15,10 +16,13 @@ public class AuthController {
 
     private final MembreRepository membreRepository;
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(MembreRepository membreRepository, JwtService jwtService) {
+    public AuthController(MembreRepository membreRepository, JwtService jwtService, PasswordEncoder passwordEncoder) 
+    {
         this.membreRepository = membreRepository;
         this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // POST /api/auth/login
@@ -37,9 +41,14 @@ public class AuthController {
         Membre membre = membreOpt.get();
 
         // Le mot de passe ne correspond pas
-        if (!membre.getMotDePasse().equals(motDePasse)) {
+       if (!passwordEncoder.matches(motDePasse, membre.getMotDePasse()))  {
             return ResponseEntity.status(401).body("Matricule ou mot de passe incorrect");
         }
+        /**
+         * Le pourquoi : passwordEncoder.matches(motDePasse, membre.getMotDePasse()) prend le mot de passe tapé (en clair) et l'empreinte stockée, 
+         * refait l'empreinte du mot de passe tapé, et compare les deux. Renvoie true si ça correspond. 
+         * C'est la vérification "sans jamais lire le mot de passe stocké".
+         */
 
         // Tout est bon : on fabrique et renvoie le jeton
         String token = jwtService.genererToken(membre.getMatricule());
