@@ -1,33 +1,16 @@
-HELP.md
-target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# Fichiers systeme Mac
+.DS_Store
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# Fichiers temporaires Word
+~$*.docx
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+# Backend (Java / Maven)
+backend/target/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+# Frontend (Angular / Node)
+frontend/node_modules/
+frontend/.angular/
+frontend/dist/
 
-### VS Code ###
-.vscode/
+# Documents Word prives
+*.docx
