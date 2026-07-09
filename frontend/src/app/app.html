@@ -10,6 +10,16 @@
 </li>
   }
 </ul>
+
+<h2>Les matchs</h2>
+<ul>
+  @for (match of matchs; track match.id) {
+    <li>
+      Match du {{ match.date }} a {{ match.heureDebut }}
+      — {{ match.type }} — {{ match.prix }} euros
+    </li>
+  }
+</ul>
 <!--
 Le concept nouveau — @for : c'est une boucle dans le HTML. Elle dit : « pour chaque site dans la liste sites, affiche un <li> ». Si tu as 2 sites, tu auras 2 lignes.
 

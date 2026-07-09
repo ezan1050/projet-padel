@@ -1,5 +1,6 @@
 import { Component, signal, OnInit } from '@angular/core';
 import { Site } from './services/site';
+import { Match } from './services/match';
 
 @Component({
   selector: 'app-root',
@@ -10,14 +11,21 @@ import { Site } from './services/site';
 export class App implements OnInit {
 
   protected readonly title = signal('Padel Réservation');
-  protected sites: any[] = [];
+  sites: any[] = [];
+  matchs: any[] = [];
 
-  constructor(private siteService: Site) { }
+  constructor(
+    private siteService: Site,
+    private matchService: Match
+  ) { }
 
   ngOnInit(): void {
     this.siteService.getSites().subscribe(data => {
-      console.log('Sites reçus du backend :', data);
       this.sites = data;
+    });
+
+    this.matchService.getMatchs().subscribe(data => {
+      this.matchs = data;
     });
   }
 }
@@ -38,4 +46,10 @@ data => { this.sites = data; } → quand les données arrivent, on les met dans 
 
 
 L'idée essentielle : la requête HTTP prend du temps. On ne peut pas dire "donne-moi les sites" et les avoir instantanément. On dit plutôt "va les chercher, et quand tu les as, mets-les ici". C'est le principe de l'asynchrone.
- */
+--import de match---
+On importe le service Match
+On ajoute une variable matchs: any[] = []
+Dans le constructeur, on injecte les deux services (séparés par une virgule). Un composant peut recevoir plusieurs services, exactement comme ton MatchService Java recevait deux repositories !
+Dans ngOnInit, on lance deux requêtes : une pour les sites, une pour les matchs. Elles partent en parallèle et chacune remplit sa variable quand elle revient. 
+
+*/
