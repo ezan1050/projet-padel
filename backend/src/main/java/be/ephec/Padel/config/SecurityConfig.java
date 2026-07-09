@@ -4,29 +4,33 @@ import be.ephec.padel.security.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
-public class SecurityConfig
- {
+public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
 
-    public SecurityConfig(JwtFilter jwtFilter) 
-    {
+    public SecurityConfig(JwtFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception 
-    {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+            .cors(Customizer.withDefaults())
             .csrf(csrf -> csrf.disable())
-            .headers(headers -> headers.frameOptions(frame -> frame.disable())) // pour la console H2
+            .headers(headers -> headers.frameOptions(frame -> frame.disable()))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
@@ -38,10 +42,22 @@ public class SecurityConfig
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder()
-     {
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-     }
+    }
 }
 
     /**
@@ -75,4 +91,23 @@ GET sur sites/terrains/matchs permitAll → consulter ces infos est public (un v
 anyRequest().authenticated() → tout le reste exige au minimum d'être connecté (avoir un bracelet valide). Par exemple créer un membre, faire un paiement, appliquer une pénalité...
 
 Le frameOptions.disable() est juste un réglage technique pour que la console H2 continue de s'afficher (sinon Spring Security la bloque).
+ 
+
+ ----- ajustements pour le CORS (Cross-Origin Resource Sharing) -----
+ Ce qui change (deux ajouts)
+1. Dans filterChain, une ligne ajoutée :
+java    .cors(Customizer.withDefaults())
+Elle active la gestion du CORS dans Spring Security, en utilisant la configuration qu'on définit juste en dessous.
+2. Un nouveau @Bean : corsConfigurationSource()
+C'est là qu'on donne les autorisations, ligne par ligne :
+
+setAllowedOrigins(List.of("http://localhost:4200")) → « j'autorise les requêtes venant de cette adresse ». C'est le cœur du réglage : ton frontend Angular.
+setAllowedMethods(...) → quelles méthodes HTTP sont permises (GET pour lire, POST pour créer, etc.). Le OPTIONS est important : le navigateur envoie une requête OPTIONS "de reconnaissance" avant les vraies requêtes, pour demander la permission.
+setAllowedHeaders(List.of("*")) → tous les en-têtes sont acceptés (notamment Authorization, celui qui portera ton token JWT !).
+setAllowCredentials(true) → autorise l'envoi d'infos d'authentification.
+registerCorsConfiguration("/**", configuration) → applique cette règle à toutes les routes de ton API.
+
+L'idée à retenir : on a donné au videur (le navigateur) la liste des invités autorisés. Maintenant, les requêtes venant de 4200 passeront.
+ 
+ 
  */

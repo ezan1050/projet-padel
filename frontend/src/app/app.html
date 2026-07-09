@@ -1,2 +1,21 @@
-<h1>{{title()}}</h1>
-<p>Bienvenue sur l'application de réservation de terrains de padel.</p>
+<h1>{{ title() }}</h1>
+
+<h2>Nos sites</h2>
+
+<ul>
+  @for (site of sites; track site.id) {
+    <li>
+  <strong>{{ site.nom }}</strong> — {{ site.adresse }}
+  (ouvert de {{ site.heureDebut }} a {{ site.heureFin }})
+</li>
+  }
+</ul>
+<!--
+Le concept nouveau — @for : c'est une boucle dans le HTML. Elle dit : « pour chaque site dans la liste sites, affiche un <li> ». Si tu as 2 sites, tu auras 2 lignes.
+
+site of sites → pour chaque site dans la liste sites
+track site.id → Angular a besoin d'un identifiant unique pour suivre chaque élément (on utilise l'id du site)
+{{ site.nom }} → affiche le nom du site (les données du JSON !)
+
+Tu retrouves l'interpolation {{ }} que tu connais déjà, appliquée aux propriétés de chaque site.
+-->
