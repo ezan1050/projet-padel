@@ -1,23 +1,24 @@
 <h1>{{ title() }}</h1>
 
-<h2>Nos sites</h2>
+<h2>Connexion</h2>
+<div>
+  <input type="text" [(ngModel)]="matricule" placeholder="Matricule" name="matricule">
+  <input type="password" [(ngModel)]="motDePasse" placeholder="Mot de passe" name="motDePasse">
+  <button (click)="seConnecter()">Se connecter</button>
+</div>
+<p>{{ messageLogin }}</p>
 
+<h2>Nos sites</h2>
 <ul>
   @for (site of sites; track site.id) {
-    <li>
-  <strong>{{ site.nom }}</strong> — {{ site.adresse }}
-  (ouvert de {{ site.heureDebut }} a {{ site.heureFin }})
-</li>
+    <li><strong>{{ site.nom }}</strong> — {{ site.adresse }}</li>
   }
 </ul>
 
 <h2>Les matchs</h2>
 <ul>
   @for (match of matchs; track match.id) {
-    <li>
-      Match du {{ match.date }} a {{ match.heureDebut }}
-      — {{ match.type }} — {{ match.prix }} euros
-    </li>
+    <li>Match du {{ match.date }} a {{ match.heureDebut }} — {{ match.type }} — {{ match.prix }} euros</li>
   }
 </ul>
 <!--
@@ -28,4 +29,18 @@ track site.id → Angular a besoin d'un identifiant unique pour suivre chaque é
 {{ site.nom }} → affiche le nom du site (les données du JSON !)
 
 Tu retrouves l'interpolation {{ }} que tu connais déjà, appliquée aux propriétés de chaque site.
+
+-- auth --
+Deux syntaxes nouvelles et essentielles :
+[(ngModel)]="matricule" → c'est le two-way binding (liaison bidirectionnelle).
+Ça veut dire : « ce champ de saisie est relié à la variable matricule ».
+Quand l'utilisateur tape, la variable se met à jour automatiquement.
+Et si le code change la variable, le champ se met à jour aussi. Dans les deux sens !
+La forme [(...)] (crochets + parenthèses) est un moyen mnémotechnique : les crochets [] = donnée qui descend vers le HTML, les parenthèses () = événement qui remonte vers le TS.
+Les deux ensemble = bidirectionnel.
+(click)="seConnecter()" → c'est un event binding (liaison d'événement).
+Ça dit : « quand on clique sur ce bouton, appelle la méthode seConnecter() ».
+Les parenthèses () autour de click signalent un événement.
+
+
 -->

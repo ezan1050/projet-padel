@@ -1,10 +1,12 @@
 import { Component, signal, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Site } from './services/site';
 import { Match } from './services/match';
+import { Auth } from './services/auth';
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -14,9 +16,14 @@ export class App implements OnInit {
   sites: any[] = [];
   matchs: any[] = [];
 
+  matricule = '';
+  motDePasse = '';
+  messageLogin = '';
+
   constructor(
     private siteService: Site,
-    private matchService: Match
+    private matchService: Match,
+    private authService: Auth
   ) { }
 
   ngOnInit(): void {
@@ -26,6 +33,19 @@ export class App implements OnInit {
 
     this.matchService.getMatchs().subscribe(data => {
       this.matchs = data;
+    });
+  }
+
+  seConnecter(): void {
+    this.authService.login(this.matricule, this.motDePasse).subscribe({
+      next: (reponse) => {
+        localStorage.setItem('token', reponse.token);
+        localStorage.setItem('role', reponse.role);
+        this.messageLogin = 'Connexion reussie ! Role : ' + reponse.role;
+      },
+      error: () => {
+        this.messageLogin = 'Matricule ou mot de passe incorrect';
+      }
     });
   }
 }
@@ -52,4 +72,19 @@ On ajoute une variable matchs: any[] = []
 Dans le constructeur, on injecte les deux services (séparés par une virgule). Un composant peut recevoir plusieurs services, exactement comme ton MatchService Java recevait deux repositories !
 Dans ngOnInit, on lance deux requêtes : une pour les sites, une pour les matchs. Elles partent en parallèle et chacune remplit sa variable quand elle revient. 
 
+---import de auth---
+Ce que fait ce code (les nouveautés)
+imports: [FormsModule] → nécessaire pour utiliser les formulaires dans le HTML. Sans ça, les champs de saisie ne fonctionneront pas.
+Trois nouvelles variables :
+
+matricule et motDePasse → contiendront ce que l'utilisateur tape
+messageLogin → un message à afficher (succès ou erreur)
+
+La méthode seConnecter() → appelée quand on clique sur le bouton. Regarde le subscribe : il a maintenant deux branches :
+
+next: (reponse) => {...} → si ça marche : on reçoit {token, role} du backend
+error: () => {...} → si ça échoue (mauvais mot de passe → 401) : on affiche une erreur
+
+localStorage.setItem('token', reponse.token) → une notion importante ! Le localStorage est un petit espace de stockage dans le navigateur. On y range le token pour le retrouver plus tard, même si l'utilisateur rafraîchit la page.
+C'est comme mettre son bracelet de festival dans sa poche : on le garde pour le montrer aux prochaines portes.
 */
