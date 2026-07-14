@@ -14,6 +14,9 @@ export class Site {
   getSites(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);
   }
+  creerSite(site: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, site);
+  }
 }
 
 /**
@@ -35,4 +38,10 @@ Observable → une "promesse de données à venir".
   On verra comment l'écouter juste après.
 any[] → "une liste de n'importe quoi".
  Pour l'instant on ne décrit pas la forme précise d'un site ; any = "type non précisé", [] = "c'est une liste".
+ 
+ --methode creerSite(site: any) → une méthode pour créer un site.--
+  creerSite fait un POST (envoie un site à créer). 
+  Remarque qu'on ne s'occupe pas du token ici — c'est l'intercepteur qui l'ajoutera tout seul.
+   C'est ça la beauté du système : le service reste simple, l'intercepteur gère l'authentification en coulisses.
+ 
  */

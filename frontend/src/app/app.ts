@@ -48,6 +48,28 @@ export class App implements OnInit {
       }
     });
   }
+
+  creerSiteTest(): void {
+    const nouveauSite = {
+      nom: 'Site cree depuis Angular',
+      adresse: 'Avenue Test 42',
+      heureDebut: '09:00:00',
+      heureFin: '22:00:00',
+      annee: 2026
+    };
+
+    this.siteService.creerSite(nouveauSite).subscribe({
+      next: () => {
+        this.messageLogin = 'Site cree avec succes !';
+        this.siteService.getSites().subscribe(data => {
+          this.sites = data;
+        });
+      },
+      error: () => {
+        this.messageLogin = 'Erreur : tu dois etre connecte pour creer un site';
+      }
+    });
+  }
 }
 
 /**
