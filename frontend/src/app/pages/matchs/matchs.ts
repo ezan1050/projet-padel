@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Match } from '../../services/match';
 
 @Component({
@@ -9,13 +9,13 @@ import { Match } from '../../services/match';
 })
 export class Matchs implements OnInit {
 
-  matchs: any[] = [];
+  matchs = signal<any[]>([]);
 
   constructor(private matchService: Match) { }
 
   ngOnInit(): void {
     this.matchService.getMatchs().subscribe(data => {
-      this.matchs = data;
+      this.matchs.set(data);
     });
   }
 }
