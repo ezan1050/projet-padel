@@ -1,0 +1,7 @@
+<h2>Les matchs</h2>
+
+<ul>
+  @for (match of matchs; track match.id) {
+    <li>Match du {{ match.date }} a {{ match.heureDebut }} — {{ match.type }} — {{ match.prix }} euros</li>
+  }
+</ul>
