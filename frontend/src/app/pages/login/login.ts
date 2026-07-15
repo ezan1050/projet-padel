@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Auth } from '../../services/auth';
 
 @Component({
@@ -14,14 +15,17 @@ export class Login {
   motDePasse = '';
   message = '';
 
-  constructor(private authService: Auth) { }
+  constructor(
+    private authService: Auth,
+    private router: Router
+  ) { }
 
   seConnecter(): void {
     this.authService.login(this.matricule, this.motDePasse).subscribe({
       next: (reponse) => {
         localStorage.setItem('token', reponse.token);
         localStorage.setItem('role', reponse.role);
-        this.message = 'Connexion reussie ! Role : ' + reponse.role;
+        this.router.navigate(['/matchs']);
       },
       error: () => {
         this.message = 'Matricule ou mot de passe incorrect';
