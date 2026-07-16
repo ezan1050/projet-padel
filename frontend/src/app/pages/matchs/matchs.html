@@ -1,7 +1,27 @@
-<h2>Les matchs</h2>
+<h2 class="h4 mb-3">Les matchs</h2>
 
-<ul>
+<div class="row g-3">
   @for (match of matchs(); track match.id) {
-    <li>Match du {{ match.date }} a {{ match.heureDebut }} — {{ match.type }} — {{ match.prix }} euros</li>
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <h3 class="h6 mb-0">{{ match.date }}</h3>
+            <span class="badge" [class.bg-primary]="match.type === 'PUBLIC'" [class.bg-secondary]="match.type === 'PRIVE'">
+              {{ match.type }}
+            </span>
+          </div>
+
+          <p class="text-muted small mb-2">Debut : {{ match.heureDebut }}</p>
+          <p class="mb-0 fw-semibold">{{ match.prix }} euros</p>
+
+        </div>
+      </div>
+    </div>
+  } @empty {
+    <div class="col-12">
+      <div class="alert alert-info mb-0">Aucun match pour le moment.</div>
+    </div>
   }
-</ul>
+</div>

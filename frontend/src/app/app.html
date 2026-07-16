@@ -1,10 +1,16 @@
-<h1>{{ title() }}</h1>
+<div class="container py-4">
 
-<nav>
-  <a routerLink="/login">Connexion</a> |
-  <a routerLink="/matchs">Les matchs</a>
-</nav>
+  <h1 class="mb-4 text-success">{{ title() }}</h1>
 
-<hr>
+  <ul class="nav nav-pills mb-4">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/login" routerLinkActive="active">Connexion</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/matchs" routerLinkActive="active">Les matchs</a>
+    </li>
+  </ul>
 
-<router-outlet></router-outlet>
+  <router-outlet></router-outlet>
+
+</div>
