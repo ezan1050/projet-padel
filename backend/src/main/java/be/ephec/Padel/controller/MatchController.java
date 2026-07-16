@@ -54,4 +54,9 @@ public class MatchController
     public boolean tousOntPaye(@PathVariable Long id) {
         return matchService.tousOntPaye(id);
     }
+    // DELETE /api/matchs/{id}
+    @DeleteMapping("/{id}")
+    public void supprimerMatch(@PathVariable Long id) {
+        matchService.supprimerMatch(id);
+    }
 }
