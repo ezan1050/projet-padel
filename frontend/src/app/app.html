@@ -1,6 +1,15 @@
 <div class="container py-4">
 
   <h1 class="mb-4 text-success">{{ title() }}</h1>
+  @if (nom) {
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <span class="text-muted">
+        Connecté : <strong>{{ nom }}</strong>
+        <span class="badge bg-secondary ms-2">{{ role }}</span>
+      </span>
+      <button class="btn btn-sm btn-outline-secondary" (click)="seDeconnecter()">Se déconnecter</button>
+    </div>
+  }
 
   <ul class="nav nav-pills mb-4">
     <li class="nav-item">

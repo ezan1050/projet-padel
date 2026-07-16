@@ -25,6 +25,7 @@ export class Login {
       next: (reponse) => {
         localStorage.setItem('token', reponse.token);
         localStorage.setItem('role', reponse.role);
+        localStorage.setItem('nom', reponse.nom);
         this.router.navigate(['/matchs']);
       },
       error: () => {

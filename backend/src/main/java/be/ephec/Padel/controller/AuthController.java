@@ -52,7 +52,11 @@ public class AuthController {
 
         // Tout est bon : on fabrique et renvoie le jeton
         String token = jwtService.genererToken(membre.getMatricule());
-        return ResponseEntity.ok(Map.of("token", token, "role", membre.getRole().toString()));
+       return ResponseEntity.ok(Map.of(
+            "token", token,
+            "role", membre.getRole().toString(),
+            "nom", membre.getPrenom() + " " + membre.getNom()
+        ));
     }
 }
 
