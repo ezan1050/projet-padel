@@ -58,6 +58,12 @@ public class MatchService
         return nonPayes == 0;
     }
     public void supprimerMatch(Long id) {
+        long joueursInscrits = participationRepository.countByMatchId(id);
+
+        if (joueursInscrits > 0) {
+            throw new IllegalStateException("Impossible de supprimer un match avec des joueurs inscrits");
+        }
+
         matchRepository.deleteById(id);
     }
 

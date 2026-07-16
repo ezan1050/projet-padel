@@ -15,5 +15,12 @@ export class Match
   {
     return this.http.get<any[]>(this.apiUrl);
   }
+  creerMatch(match: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, match);
+  }
+
+  supprimerMatch(id: number): Observable<any> {
+    return this.http.delete<any>(this.apiUrl + '/' + id);
+  }
   
 }
