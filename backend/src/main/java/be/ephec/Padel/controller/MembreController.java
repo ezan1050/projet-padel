@@ -1,5 +1,6 @@
 package be.ephec.padel.controller;
 
+import be.ephec.padel.dto.MembreDTO;
 import be.ephec.padel.model.Membre;
 import be.ephec.padel.service.MembreService;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +20,17 @@ public class MembreController
 
     // GET /api/membres -> liste de tous les membres
     @GetMapping
-    public List<Membre> getTousLesMembres()
-    {
-        return membreService.getTousLesMembres();
+    public List<MembreDTO> getTousLesMembres() {
+        return membreService.getTousLesMembres().stream()
+                .map(membre -> new MembreDTO(
+                        membre.getId(),
+                        membre.getMatricule(),
+                        membre.getNom(),
+                        membre.getPrenom(),
+                        membre.getEmail(),
+                        membre.getRole() != null ? membre.getRole().name() : null
+                ))
+                .toList();
     }
     // POST /api/membres -> creer un nouveau membre
     @PostMapping
