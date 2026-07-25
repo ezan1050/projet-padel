@@ -1,6 +1,7 @@
 package be.ephec.padel.controller;
 
 import be.ephec.padel.model.Match;
+import be.ephec.padel.dto.MatchDTO;
 import be.ephec.padel.service.MatchService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -20,9 +21,21 @@ public class MatchController
 
     // GET /api/matches -> liste de tous les matches
     @GetMapping
-    public List<Match> getTousLesMatchs()
-    {
-        return matchService.getTousLesMatchs();
+    public List<MatchDTO> getTousLesMatchs() {
+        return matchService.getTousLesMatchs().stream()
+                .map(match -> new MatchDTO(
+                        match.getId(),
+                        match.getDate(),
+                        match.getHeureDebut(),
+                        match.getPrix(),
+                        match.getType() != null ? match.getType().name() : null,
+                        match.getStatut() != null ? match.getStatut().name() : null,
+                        match.getTerrain() != null ? match.getTerrain().getNom() : null,
+                        match.getOrganisateur() != null
+                            ? match.getOrganisateur().getPrenom() + " " + match.getOrganisateur().getNom()
+                            : null
+                ))
+                .toList();
     }
 
     // POST /api/matches -> creer un nouveau match
