@@ -5,6 +5,7 @@ import be.ephec.padel.model.StatutPaiement;
 import be.ephec.padel.repository.MatchRepository;
 import be.ephec.padel.repository.ParticipationRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
@@ -57,13 +58,12 @@ public class MatchService
         long nonPayes = participationRepository.countByMatchIdAndStatutPaiement(matchId,StatutPaiement.EN_ATTENTE);
         return nonPayes == 0;
     }
+    @Transactional
     public void supprimerMatch(Long id) {
-        long joueursInscrits = participationRepository.countByMatchId(id);
+        // 1. Supprimer d'abord les participations liees a ce match
+        participationRepository.deleteByMatchId(id);
 
-        if (joueursInscrits > 0) {
-            throw new IllegalStateException("Impossible de supprimer un match avec des joueurs inscrits");
-        }
-
+        // 2. Puis supprimer le match lui-meme
         matchRepository.deleteById(id);
     }
 

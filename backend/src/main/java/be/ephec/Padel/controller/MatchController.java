@@ -55,15 +55,10 @@ public class MatchController
     public boolean tousOntPaye(@PathVariable Long id) {
         return matchService.tousOntPaye(id);
     }
-    // DELETE /api/matchs/{id}
+ 
     // DELETE /api/matchs/{id}
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> supprimerMatch(@PathVariable Long id) {
-        try {
-            matchService.supprimerMatch(id);
-            return ResponseEntity.ok().build();
-        } catch (IllegalStateException e) {
-            return ResponseEntity.status(409).body(e.getMessage());
-        }
+    public void supprimerMatch(@PathVariable Long id) {
+        matchService.supprimerMatch(id);
     }
 }

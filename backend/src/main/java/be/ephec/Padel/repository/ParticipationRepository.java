@@ -8,5 +8,7 @@ public interface ParticipationRepository extends JpaRepository<Participation, Lo
 {
     long countByMatchId(Long matchId);
     long countByMatchIdAndStatutPaiement(Long matchId, StatutPaiement statutPaiement);
+    void deleteByMatchId(Long matchId);
 
 }
+
